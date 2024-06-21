@@ -6,7 +6,6 @@ const router = express.Router()
 
 router.route('/seedData').get(productController.fetchAndSeedData)
 
-
-
+router.route('/').get(productController.getAllProducts)
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const axios = require("axios");
 const Product = require("./../model/productModel");
+const ApiFeatures = require("./../utils/apiFeatures")
 
 exports.fetchAndSeedData = async (req, res, next) => {
   const response = await axios.get(

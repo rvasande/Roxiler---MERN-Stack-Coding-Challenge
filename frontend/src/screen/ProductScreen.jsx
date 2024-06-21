@@ -37,7 +37,7 @@ const ProductScreen = () => {
  <Container className="mt-5">
       <Row>
         <Col>
-          <h1 className="text-center mb-4">Product Table</h1>
+          <h1 className="text-center mb-4">Transaction Table</h1>
           <Table striped bordered hover responsive>
             <thead>
               <tr>
@@ -56,11 +56,11 @@ const ProductScreen = () => {
                   <td>{product?.id}</td>
                   <td>{product?.title}</td>
                   <td>{product?.description}</td>
-                  <td>{product?.price}</td>
+                  <td>{product?.price} ₹</td>
                   <td>{product?.category}</td>
                   <td>{product?.sold ? 'Yes' : 'No'}</td>
                   <td>
-                    <Image src={product?.image} alt={product?.title} thumbnail className="table-image" />
+                    <Image src={product?.image} alt={product?.title} thumbnail className="table-image imgSize" />
                   </td>
                 </tr>
               ))}

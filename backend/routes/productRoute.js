@@ -10,4 +10,6 @@ router.route('/').get(productController.getAllProducts)
 
 router.route('/stats/:month').get(productController.productsStats)
 
+router.route('/barChart/:month').get(productController.productBarChart)
+
 module.exports = router;

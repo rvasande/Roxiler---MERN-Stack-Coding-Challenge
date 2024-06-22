@@ -34,7 +34,6 @@ const ProductScreen = () => {
     }
   };
 
-
   const debouncedSearch = debounce((value) => {
     setSearchQuery(value);
   }, 1000);
@@ -54,7 +53,7 @@ const ProductScreen = () => {
               onChangeValue={(e) => debouncedSearch(e.target.value)}
             />
           </Col>
-          <Col>
+          <Col md="4">
             <SelectMonth
               md="4"
               options={monthsOptions}

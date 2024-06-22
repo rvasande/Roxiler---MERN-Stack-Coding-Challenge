@@ -1,6 +1,7 @@
 const express = require("express");
 const productRoute = require("./routes/productRoute");
 const globalErrorHandler = require("./controller/errorController");
+const AppError = require('./utils/appError')
 const cors = require("cors");
 
 const app = express();

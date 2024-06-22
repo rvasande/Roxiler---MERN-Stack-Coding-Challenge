@@ -25,7 +25,7 @@ const ProductsStatsScreen = () => {
 
   return (
     <Container>
-      <Row className="justify-content-center mt-5">
+      <Row className="justify-content-center my-5">
         <Col xs={12} sm={8} md={6} lg={5}>
           <Card className="mx-auto" style={{ width: "100%" }}>
             <Card.Body>

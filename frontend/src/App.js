@@ -3,6 +3,7 @@ import Header from "./component/Header";
 import ProductScreen from "./screen/ProductScreen";
 import { Container } from "react-bootstrap";
 import ProductsStatsScreen from "./screen/ProductsStatsScreen";
+import ProductBarChartScreen from "./screen/ProductBarChartScreen";
 
 function App() {
   return (
@@ -11,7 +12,11 @@ function App() {
       <main>
         <Container>
           <ProductScreen />
+          <hr />
           <ProductsStatsScreen />
+          <hr />
+          <ProductBarChartScreen />
+          <hr />
         </Container>
       </main>
       <Footer />

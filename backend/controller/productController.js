@@ -137,3 +137,58 @@ exports.productBarChart = catchAsync(async (req, res, next) => {
     data: counts,
   });
 });
+
+exports.productCategeory = catchAsync(async (req, res, next) => {
+  const month = req.params.month * 1;
+
+  const category = await Product.aggregate([
+    {
+      $match: {
+        $expr: {
+          $eq: [{ $month: "$dateOfSale" }, month],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$category",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      category,
+    },
+  });
+});
+
+exports.combinedResponse = catchAsync(async (req, res, next) => {
+  const month = req.params.month * 1;
+  const statsPromise = axios.get(
+    `http://localhost:5000/api/v1/products/stats/${month}`
+  );
+  const categoryPromise = axios.get(
+    `http://localhost:5000/api/v1/products/category/${month}`
+  );
+  const barChartPromise = axios.get(
+    `http://localhost:5000/api/v1/products/barChart/${month}`
+  );
+
+  const [statsResponse, categoryResponse, barChartResponse] = await Promise.all(
+    [statsPromise, categoryPromise, barChartPromise]
+  );
+
+  const combinedResponse = {
+    stats: statsResponse.data,
+    categories: categoryResponse.data,
+    barChart: barChartResponse.data,
+  };
+
+  res.status(200).json({
+    status: "success",
+    data: combinedResponse,
+  });
+});

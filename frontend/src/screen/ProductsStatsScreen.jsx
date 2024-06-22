@@ -7,7 +7,7 @@ const ProductsStatsScreen = () => {
   const [month, setMonth] = useState("01");
   const [stats, setStats] = useState([]);
 
-  const fetchProductsStats = async () => {
+  const fetchProductsStats = async (month) => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/v1/products/stats/${month}`
@@ -20,7 +20,7 @@ const ProductsStatsScreen = () => {
   };
 
   useEffect(() => {
-    fetchProductsStats();
+    fetchProductsStats(month);
   }, [month]);
 
   return (

@@ -23,7 +23,7 @@ const ProductScreen = () => {
     }
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (month) => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -44,7 +44,7 @@ const ProductScreen = () => {
 
   useEffect(() => {
     // seedData()
-    fetchProducts();
+    fetchProducts(month);
   }, [searchQuery,month]);
 
   return (

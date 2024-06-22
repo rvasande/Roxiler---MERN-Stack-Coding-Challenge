@@ -27,7 +27,7 @@ const ProductBarChartScreen = () => {
   const [month, setMonth] = useState("01");
   const [barChartData, setBarChartData] = useState([]);
 
-  const fetchProductsBarChartData = async () => {
+  const fetchProductsBarChartData = async (month) => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/v1/products/barChart/${month}`
@@ -41,7 +41,7 @@ const ProductBarChartScreen = () => {
   };
 
   useEffect(() => {
-    fetchProductsBarChartData();
+    fetchProductsBarChartData(month);
   }, [month]);
 
   const data = {

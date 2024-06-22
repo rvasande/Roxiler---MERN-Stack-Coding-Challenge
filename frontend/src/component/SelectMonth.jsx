@@ -3,7 +3,6 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 
 function SelectComponent({ selectedOption, onValueChange, options }) {
-    console.log(selectedOption);
     return (
         <Form.Group controlId="exampleForm.SelectCustom">
             {/* <Form.Label>Select Option</Form.Label> */}

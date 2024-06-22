@@ -48,21 +48,34 @@ exports.productsStats = catchAsync(async (req, res, next) => {
     },
     {
       $group: {
-        _id: { $month: "$dateOfSale" },
-        totalSaleAmoun: { $sum: "$price" },
-        totalSoldItems: { $sum: { $cond: { if: "$sold", then: 1, else: 0 } } },
-        totalNotSoldItems: {
-          $sum: { $cond: { if: "$sold", then: 0, else: 1 } },
+        _id: { month: { $month: "$dateOfSale" } },
+        totalSaleAmount: { 
+          $sum: { 
+            $cond: [{ $eq: ["$sold", true] }, "$price", 0] 
+          } 
+        },
+        totalSoldItems: { 
+          $sum: { 
+            $cond: [{ $eq: ["$sold", true] }, 1, 0] 
+          } 
+        },
+        totalNotSoldItems: { 
+          $sum: { 
+            $cond: [{ $eq: ["$sold", false] }, 1, 0] 
+          } 
         },
       },
     },
     {
-      $addFields: { month: "$_id" },
+      $addFields: { month: "$_id.month" },
     },
+    {
+      $project: { _id: 0 } // Hide the _id field
+    }
   ]);
 
   res.status(200).json({
     status: "success",
-    data: stats[0],
+    data: stats[0] || {},
   });
 });

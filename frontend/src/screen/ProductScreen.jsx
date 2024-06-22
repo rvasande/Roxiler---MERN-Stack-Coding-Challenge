@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { Container, Table,Col, Row, Image } from "react-bootstrap";
+import { Container, Table, Col, Row, Image } from "react-bootstrap";
+import SearchInput from "../component/SearchInput";
+import { debounce } from "../lib/utils";
 
 const ProductScreen = () => {
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState();
 
   const seedData = async () => {
     try {
@@ -18,7 +21,9 @@ const ProductScreen = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/v1/products");
+      const response = await fetch(
+        `http://localhost:5000/api/v1/products?search=${searchQuery}`
+      );
       const data = await response.json();
       console.log("dddddd", data.data.results);
       setProducts(data.data.results);
@@ -27,48 +32,65 @@ const ProductScreen = () => {
     }
   };
 
+  const debouncedSearch = debounce((value) => {
+    setSearchQuery(value);
+  }, 1000);
+
   useEffect(() => {
     // seedData()
     fetchProducts();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <>
- <Container className="mt-5">
-      <Row>
-        <Col>
-          <h1 className="text-center mb-4">Transaction Table</h1>
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Sold</th>
-                <th>Image</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products?.map((product, index) => (
-                <tr key={index}>
-                  <td>{product?.id}</td>
-                  <td>{product?.title}</td>
-                  <td>{product?.description}</td>
-                  <td>{product?.price} ₹</td>
-                  <td>{product?.category}</td>
-                  <td>{product?.sold ? 'Yes' : 'No'}</td>
-                  <td>
-                    <Image src={product?.image} alt={product?.title} thumbnail className="table-image imgSize" />
-                  </td>
+      <Container className="mt-5">
+        <Row className="py-4">
+          <Col md="4">
+            <SearchInput
+              placeholder={"search..."}
+              onChangeValue={(e) => debouncedSearch(e.target.value)}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {/* <h1 className="text-center mb-4">Transaction Table</h1> */}
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Sold</th>
+                  <th>Image</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
+              </thead>
+              <tbody>
+                {products?.map((product, index) => (
+                  <tr key={index}>
+                    <td>{product?.id}</td>
+                    <td>{product?.title}</td>
+                    <td>{product?.description}</td>
+                    <td>{product?.price} ₹</td>
+                    <td>{product?.category}</td>
+                    <td>{product?.sold ? "Yes" : "No"}</td>
+                    <td>
+                      <Image
+                        src={product?.image}
+                        alt={product?.title}
+                        thumbnail
+                        className="table-image imgSize"
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

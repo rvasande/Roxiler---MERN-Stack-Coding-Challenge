@@ -6,6 +6,19 @@ class ApiFeatures {
     this.queryString = queryString;
   }
 
+
+  filterByMonth() {
+    const month = parseInt(this.queryString.month, 10);
+    if (month && month >= 1 && month <= 12) {
+      this.query = this.query.find({
+        $expr: {
+          $eq: [{ $month: "$dateOfSale" }, month],
+        },
+      });
+    }
+    return this;
+  }
+
   pagination() {
     const page = this.queryString.page * 1 || 1;
     const limit = this.queryString.limit * 1 || 10;

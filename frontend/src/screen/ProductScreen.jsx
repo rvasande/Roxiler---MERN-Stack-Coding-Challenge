@@ -27,7 +27,7 @@ const ProductScreen = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/products?search=${searchQuery}`
+        `http://localhost:5000/api/v1/products?search=${searchQuery}&month=${month}`
       );
       const data = await response.json();
       setProducts(data.data.results);
@@ -45,7 +45,7 @@ const ProductScreen = () => {
   useEffect(() => {
     // seedData()
     fetchProducts();
-  }, [searchQuery]);
+  }, [searchQuery,month]);
 
   return (
     <>

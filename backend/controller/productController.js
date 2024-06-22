@@ -22,6 +22,7 @@ exports.fetchAndSeedData = catchAsync(async (req, res, next) => {
 exports.getAllProducts = catchAsync(async (req, res, next) => {
   const products = new ApiFeatures(Product.find(), req.query)
     .pagination()
+    .filterByMonth()
     .search();
 
   const results = await products.query;
@@ -113,7 +114,6 @@ exports.productBarChart = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  // Initialize response with all counts set to 0
   const priceRanges = [
     "0 - 100",
     "101 - 200",

@@ -32,7 +32,7 @@ const productSchema = new Schema({
   },
   dateOfSale: {
     type: Date,
-    required: false
+    required: true
   }
 });
 

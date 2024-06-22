@@ -8,4 +8,6 @@ router.route('/seedData').get(productController.fetchAndSeedData)
 
 router.route('/').get(productController.getAllProducts)
 
+router.route('/stats/:month').get(productController.productsStats)
+
 module.exports = router;

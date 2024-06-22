@@ -29,11 +29,10 @@ class ApiFeatures {
           // { price: searchRegex },
         ],
       });
-    }else if (this.queryString.price) {
+    } else if (this.queryString.price) {
       const price = parseFloat(this.queryString.price);
       this.query = this.query.find({ price: price });
     }
-  
 
     return this;
   }

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Container, Table, Col, Row, Image } from "react-bootstrap";
 import SearchInput from "../component/SearchInput";
+import SelectMonth from "../component/SelectMonth";
 import { debounce } from "../lib/utils";
+import { monthsOptions } from "../constant";
 
 const ProductScreen = () => {
   const [products, setProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [month, setMonth] = useState("03");
 
   const seedData = async () => {
     try {
@@ -25,12 +28,12 @@ const ProductScreen = () => {
         `http://localhost:5000/api/v1/products?search=${searchQuery}`
       );
       const data = await response.json();
-      console.log("dddddd", data.data.results);
       setProducts(data.data.results);
     } catch (error) {
       console.error(`Error while fetching products`, error);
     }
   };
+
 
   const debouncedSearch = debounce((value) => {
     setSearchQuery(value);
@@ -49,6 +52,14 @@ const ProductScreen = () => {
             <SearchInput
               placeholder={"search..."}
               onChangeValue={(e) => debouncedSearch(e.target.value)}
+            />
+          </Col>
+          <Col>
+            <SelectMonth
+              md="4"
+              options={monthsOptions}
+              selectedOption={month}
+              onValueChange={setMonth}
             />
           </Col>
         </Row>
@@ -86,6 +97,13 @@ const ProductScreen = () => {
                     </td>
                   </tr>
                 ))}
+                {products.length === 0 && (
+                  <tr className="hover:bg-[#2C3E50]/60">
+                    <td className="h-24 text-center" colSpan={12}>
+                      No results found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
           </Col>

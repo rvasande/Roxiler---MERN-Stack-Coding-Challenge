@@ -1,8 +1,9 @@
 const axios = require("axios");
 const Product = require("./../model/productModel");
-const ApiFeatures = require("./../utils/apiFeatures")
+const ApiFeatures = require("./../utils/apiFeatures");
+const catchAsync = require("../utils/catchAsync");
 
-exports.fetchAndSeedData = async (req, res, next) => {
+exports.fetchAndSeedData = catchAsync(async (req, res, next) => {
   const response = await axios.get(
     "https://s3.amazonaws.com/roxiler.com/product_transaction.json"
   );
@@ -16,9 +17,9 @@ exports.fetchAndSeedData = async (req, res, next) => {
     status: "success",
     message: "data inserted successfully!",
   });
-};
+});
 
-exports.getAllProducts = async (req, res, next) => {
+exports.getAllProducts = catchAsync(async (req, res, next) => {
   const products = new ApiFeatures(Product.find(), req.query)
     .pagination()
     .search();
@@ -32,4 +33,36 @@ exports.getAllProducts = async (req, res, next) => {
       results,
     },
   });
-};
+});
+
+exports.productsStats = catchAsync(async (req, res, next) => {
+  const month = req.params.month * 1;
+
+  const stats = await Product.aggregate([
+    {
+      $match: {
+        $expr: {
+          $eq: [{ $month: "$dateOfSale" }, month],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$dateOfSale" },
+        totalSaleAmoun: { $sum: "$price" },
+        totalSoldItems: { $sum: { $cond: { if: "$sold", then: 1, else: 0 } } },
+        totalNotSoldItems: {
+          $sum: { $cond: { if: "$sold", then: 0, else: 1 } },
+        },
+      },
+    },
+    {
+      $addFields: { month: "$_id" },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: stats[0],
+  });
+});

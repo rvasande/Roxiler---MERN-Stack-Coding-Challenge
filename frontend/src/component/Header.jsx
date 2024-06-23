@@ -4,7 +4,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const MyNavbar = () => {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar className='custom-navbar navBg' expand="lg" >
             <Container>
             <Navbar.Brand href="#home">( Roxiler ) MERN stack coding assignment </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

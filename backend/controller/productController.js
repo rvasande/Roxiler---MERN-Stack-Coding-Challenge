@@ -21,17 +21,26 @@ exports.fetchAndSeedData = catchAsync(async (req, res, next) => {
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
   const products = new ApiFeatures(Product.find(), req.query)
-    .pagination()
     .filterByMonth()
     .search();
 
   const results = await products.query;
 
+  const totalResults = results.length;
+
+  const paginatedProducts = new ApiFeatures(Product.find(), req.query)
+    .filterByMonth()
+    .pagination()
+    .search();
+
+  const paginatedResults = await paginatedProducts.query;
+
   res.status(200).json({
     status: "success",
-    results: results.length,
+    totalResults,
+    resultsPerPage: paginatedResults.length,
     data: {
-      results,
+      results: paginatedResults,
     },
   });
 });
@@ -71,7 +80,7 @@ exports.productsStats = catchAsync(async (req, res, next) => {
       $addFields: { month: "$_id.month" },
     },
     {
-      $project: { _id: 0 }, // Hide the _id field
+      $project: { _id: 0 },
     },
   ]);
 
@@ -168,13 +177,13 @@ exports.productCategeory = catchAsync(async (req, res, next) => {
 exports.combinedResponse = catchAsync(async (req, res, next) => {
   const month = req.params.month * 1;
   const statsPromise = axios.get(
-    `http://localhost:5000/api/v1/products/stats/${month}`
+    `${API_URL}products/stats/${month}`
   );
   const categoryPromise = axios.get(
-    `http://localhost:5000/api/v1/products/category/${month}`
+    `${API_URL}products/category/${month}`
   );
   const barChartPromise = axios.get(
-    `http://localhost:5000/api/v1/products/barChart/${month}`
+    `${API_URL}products/barChart/${month}`
   );
 
   const [statsResponse, categoryResponse, barChartResponse] = await Promise.all(

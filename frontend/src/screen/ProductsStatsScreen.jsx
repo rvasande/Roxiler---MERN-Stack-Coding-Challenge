@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import SelectMonth from "../component/SelectMonth";
-import { monthsOptions } from "../constant";
+import { monthsOptions,API_URL } from "../constant";
 
 const ProductsStatsScreen = () => {
   const [month, setMonth] = useState("01");
@@ -10,7 +10,7 @@ const ProductsStatsScreen = () => {
   const fetchProductsStats = async (month) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/products/stats/${month}`
+        `${API_URL}products/stats/${month}`
       );
       const data = await response.json();
       setStats(data.data);

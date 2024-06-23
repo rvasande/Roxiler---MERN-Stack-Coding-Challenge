@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {  Container, Row, Col } from "react-bootstrap";
 import SelectMonth from "../component/SelectMonth";
-import { monthsOptions } from "../constant";
+import { monthsOptions,API_URL } from "../constant";
 
 import {
   Chart as ChartJS,
@@ -30,7 +30,7 @@ const ProductBarChartScreen = () => {
   const fetchProductsBarChartData = async (month) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/products/barChart/${month}`
+        `${API_URL}products/barChart/${month}`
       );
       const data = await response.json();
       const result = data?.data;

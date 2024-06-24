@@ -53,9 +53,9 @@ const ProductScreen = () => {
     fetchProducts(month, currentPage);
   }, [searchQuery, month, currentPage]);
 
-  // useEffect(() =>{
-  //   setCurrentPage(1)
-  // },[month])
+  useEffect(() => {
+    setCurrentPage(1); // Reset current page to 1 when month changes
+  }, [month]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
